@@ -1,0 +1,37 @@
+
+<div class="container mt-4 bg-light">
+  <h2>COBROS</h2>
+  <div class="mt-4">  <button routerLink="/agrCobros" type="button" class="btn btn-primary">Agregar</button> </div>
+
+<div class="mt-4">
+  <table class="table table-sm  border-dark table-info">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">IMPRIMIR</th>
+        <th scope="col">ID</th>
+        <th scope="col">DESCRIPCCIÓN</th>
+        <th scope="col">FECHA</th>
+        <th scope="col">TOTAL</th>
+        <th scope="col">CÉDULA</th>
+        <th scope="col">CUENTA BANCARIA</th>
+
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cabeceras of ListarCabeceras ">
+        <td><button (click)="imprimir(cabeceras.idPC)" type="button" class="btn btn-primary">Imprimir</button></td>
+        <th>{{cabeceras.idPC}}</th>
+        <td>{{cabeceras.descripcionPC}}</td>
+        <td>{{cabeceras.fechaPC | date: 'd/M/yy'}}</td>
+        <td>{{cabeceras.totalPD | currency: 'USD' | lowercase}}</td>
+        <td>{{cabeceras.cedulaCli}}</td>
+        <td>{{cabeceras.idCB}}</td>
+      </tr>
+      <tr>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row mt-4"></div>
+</div>
+<router-outlet></router-outlet>

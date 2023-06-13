@@ -1,0 +1,8 @@
+{
+  "/*":{
+    "target": "https://apifacturacion1.azurewebsites.net/api/FactClients/",
+    "secure": false,
+    "logLevel": "debug"
+
+  }
+}

@@ -1,0 +1,175 @@
+<div class="container bg-light">
+  <h2>AGREGAR COBRO</h2>
+  <div>
+    <div>
+      <div>
+        <form class="row g-3" [formGroup]="cobro">
+          <div class="col-md-3">
+            <label class="form-label">ID COBRO</label>
+            <div class="p-2 mb-2 bg-light text-black">{{ idCobro+y }}</div>
+          </div>
+          <div class="col-md-3">
+            <label for="inputPassword4" class="form-label">FECHA</label>
+            <div class="p-2 mb-2 bg-light text-black">
+              {{ fechaPC | date : "dd/MM/yyyy" }}
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">DESCRIPCCIÓN DEL PAGO</label>
+            <input type="text" class="form-control" formControlName="descripcionPC" />
+            <div class="alert alert-danger" *ngIf="
+                cobro.get('descripcionPC')?.errors &&
+                cobro.get('descripcionPC')?.touched
+              ">
+              <p>
+                El campo es requerido
+              </p>
+              <p *ngIf="cobro.get('descripcionPC')?.hasError('pattern')">
+                Digite solo LETRAS y solo UN espacio en BLANCO.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 mt-2">
+            <label for="inputPassword4" class="form-label">SELECCIONAR CLIENTE</label>
+            <select class="form-select" formControlName="cedulaCli" (change)="clienteSelect($event)">
+              <option [ngValue]="cliente.cliIdentification" *ngFor="let cliente of ListarClientes">
+                {{ cliente.cliIdentification }} - {{ cliente.cliName }}
+              </option>
+            </select>
+            <div class="alert alert-danger" *ngIf="
+                cobro.get('cedulaCli')?.errors &&
+                cobro.get('cedulaCli')?.touched
+              ">
+              <p *ngIf="cobro.get('cedulaCli')?.hasError">
+                El campo es requerido
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6 mt-2">
+            <label for="inputPassword4" class="form-label">SELECCIONAR CUENTA BANCARIA</label>
+            <select class="form-select" formControlName="idCB" >
+              <option [ngValue]="CuentaB.idCB" *ngFor="let CuentaB of ListarCuentas">
+                {{ CuentaB.idCB }}-{{ CuentaB.nombreCB }}
+              </option>
+            </select>
+            <div class="alert alert-danger" *ngIf="cobro.get('idCB')?.errors && cobro.get('idCB')?.touched">
+              <p >El campo es requerido</p>
+            </div>
+          </div>
+          <label for="inputPassword4" class="form-label">FACTURAS DEL CLIENTE</label>
+          <div class="container mt-3">
+            <table class="table table-sm border-dark table-danger">
+              <thead class="table-danger">
+                <tr>
+                  <th scope="col">N° FACTURA</th>
+                  <th scope="col">CÉDULA</th>
+                  <th scope="col">FECHA</th>
+                  <th scope="col">IVA</th>
+                  <th scope="col">SUBTOTAL</th>
+                  <th scope="col">TOTAL</th>
+                </tr>
+                <tr *ngFor="let facturas of ListarFacturas;  let a=index " (click)="selecionaFactura(facturas)">
+                  <td>{{ facturas.invoiceHeadId }}</td>
+                  <td>{{ facturas.cliIdentification }}</td>
+                  <td>{{ facturas.invoiceDate | date : "d/M/yy" }}</td>
+                  <td>{{ facturas.invoiceIva }}</td>
+                  <td>
+                    {{
+                    facturas.invoiceSubtotal | currency : "USD" | lowercase
+                    }}
+                  </td>
+                  <td>
+                    {{ facturas.invoiceTotal | currency : "USD" | lowercase }}
+                  </td>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2 mt-2">
+              <label for="inputPassword4" class="form-label">FACTURA A PAGAR</label>
+              <br />
+              <div class="p-2 mb-2 bg-light text-black">{{ idFac }}</div>
+            </div>
+            <div class="col-md-2 mt-2">
+              <label for="inputPassword4" class="form-label">TOTAL</label>
+              <br />
+              <div class="p-2 mb-2 bg-light text-black">
+                {{ totalFac | currency : "USD" | lowercase }}
+              </div>
+            </div>
+            <div class="col-md-2 mt-2">
+              <label for="inputPassword4" class="form-label">SALDO FACTURA</label>
+              <br />
+              <div class="p-2 mb-2 bg-light text-black">
+                {{ saldoFac | currency : "USD" | lowercase }}
+              </div>
+            </div>
+            <div class="col-md-2 mt-2">
+              <label for="inputPassword4" class="form-label">PAGO</label>
+              <input min="1"  type="number" class="form-control" formControlName="pago" />
+              <div class="alert alert-danger" *ngIf=" cobro.get('pago')?.hasError('pattern') ">
+                <p>Ingrese un numero Valido Sin +/-</p>
+              </div>
+            </div>
+            <div class="col-md-2 align-self-center">
+              <button (click)="agregarDetalle()"  [disabled]=" cobro.get('pago')?.hasError('pattern') " class="btn btn-primary">
+                Agregar
+              </button>
+            </div>
+            <div class="p-2 mb-2 bg-light text-danger">
+              <h4>{{ mensaje }}</h4>
+            </div>
+          </div>
+          <label for="inputPassword4" class="form-label">COBROS DEL CLIENTE</label>
+          <div class="container mt-3">
+            <table class="table table-sm border-dark table-info">
+              <thead class="table-danger">
+                <tr>
+                  <th scope="col">ELIMINAR</th>
+                  <th scope="col">N° FACTURA</th>
+                  <th scope="col">SALDO</th>
+                  <th scope="col">PAGO</th>
+                </tr>
+              </thead>
+                <tbody>
+                <tr *ngFor="let detalles of ListarDetalles; let i=index ">
+                  <td>
+                    <button (click)="eliminar(i)" type="button" class="btn btn-danger">Eliminar</button>
+                  </td>
+                  <td>{{ detalles.numeroFac }}</td>
+                  <td>{{ detalles.saldoFac | currency : "USD" | lowercase }}</td>
+                  <td>{{ detalles.valorApagar | currency : "USD" | lowercase  }}</td>
+                </tr>
+                <tr>
+                  <td>TOTAL</td>
+                  <td>{{totalCob | currency : "USD" | lowercase }}</td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-md-1">
+              <button (click)="Agregar($event)" [disabled]="cobro.invalid" class="btn btn-primary">
+                Guardar
+              </button>
+            </div>
+            <div class="col-md-1">
+              <button routerLink="/iniCobros" class="btn btn-warning">
+                Regresar
+              </button>
+            </div>
+
+            <div class="p-2 mb-2 bg-light text-danger">
+              <h4>{{ mensajef }}</h4>
+            </div>
+          </div>
+          <div class="row mt-4"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="container bg-light">
+  <h2>CREAR CUENTAS BANCARIAS</h2>
+  <form [formGroup]="cuenta" class="row g-2" (ngSubmit)="Agregar($event)">
+    <div >
+      <label class="form-label"> ID </label>
+      <div class="p-2 mb-2 bg-light text-black">{{ idCuenta+y }}</div>
+    </div>
+    <div>
+      <label class="form-label"> NOMBRE </label>
+      <input type="text"  class="form-control" formControlName="nombreCB">
+      <div class="alert alert-danger" *ngIf="cuenta.get('nombreCB')?.errors && cuenta.get('nombreCB')?.touched ">
+        <p *ngIf="cuenta.get('nombreCB')?.hasError"> El campo es requerido</p>
+        <p *ngIf="cuenta.get('nombreCB')?.hasError('pattern')">
+          Digite solo LETRAS y solo UN espacio en BLANCO.
+        </p>
+      </div>
+    </div>
+    <div >
+      <label class="form-label"> ENTIDAD </label>
+      <input type="text"  class="form-control"  formControlName="entidadCB">
+      <div class="alert alert-danger" *ngIf="cuenta.get('entidadCB')?.errors && cuenta.get('entidadCB')?.touched ">
+        <p *ngIf="cuenta.get('entidadCB')?.hasError"> El campo es requerido</p>
+        <p *ngIf="cuenta.get('entidadCB')?.hasError('pattern')">
+          Digite solo LETRAS y solo UN espacio en BLANCO.
+        </p>
+      </div>
+    </div>
+    <div >
+      <label class="form-label"> DESCRIPCCIÓN </label>
+      <input type="text"  class="form-control"  formControlName="descripcionCB">
+      <div class="alert alert-danger" *ngIf="cuenta.get('descripcionCB')?.errors && cuenta.get('descripcionCB')?.touched ">
+        <p *ngIf="cuenta.get('descripcionCB')?.hasError"> El campo es requerido</p>
+        <p *ngIf="cuenta.get('descripcionCB')?.hasError('pattern')">
+          Digite solo LETRAS y solo UN espacio en BLANCO.
+        </p>
+      </div>
+    </div>
+    <div>
+      <label class="form-label"> ESTADO </label>
+      <div>
+        <select class="form-select" aria-label="Default select example" formControlName="estadoCB">
+          <option value="true">Habilitado</option>
+          <option value="false">Deshabilitado</option>
+        </select>
+        <div class="alert alert-danger" *ngIf="cuenta.get('estadoCB')?.errors && cuenta.get('estadoCB')?.touched ">
+          <p *ngIf="cuenta.get('estadoCB')?.hasError"> El campo es requerido</p>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row mt-3" >
+      <div class="col-md-2">
+        <button type="submit" [disabled]="cuenta.invalid" class="btn btn-primary">Agregar</button>
+      </div>
+      <div class="col-md-3">
+        <button routerLink="/inicio" class="btn btn-warning">Regresar</button>
+      </div>
+    </div>
+  </form>
+  <div class="row mt-4"></div>
+</div>
+

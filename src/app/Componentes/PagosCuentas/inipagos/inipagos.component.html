@@ -1,0 +1,66 @@
+
+<div class="w-990 h-99 p-5 bg-light">
+  <h3>PAGOS DE CLIENTES</h3>
+  <div class="row">
+    <div class="col-md-3 mt-2">
+      <label for="inputPassword4" class="form-label">SELECCIONE UN CLIENTE</label>
+      <select class="form-select" [(ngModel)]="selectedValue" (change)="listarClientes()">
+        <option >---Todos Los Cobros----</option>
+        <option [ngValue]="clocal.cedulaCli" *ngFor="let clocal of ListarClientes">
+          {{ clocal.cedulaCli }}_{{ clocal.nombresCli }}
+        </option>
+      </select>
+    </div>
+      <div class="col-md-1">
+        <button (click)="buscarFacturas($event)"  class="btn btn-primary">Buscar</button>
+      </div>
+      <div class="col-md-1">
+        <button  (click)="exportAsXLSX()" type="button" class="btn btn-primary">Imprimir</button>
+      </div>
+    <div class="p-2 mb-2 bg-light text-danger">
+      <h4>{{ mensaje }}</h4>
+    </div>
+  </div>
+
+  <div class="m-4"></div>
+  <div class="col-20">
+    <table class="table table-sm  border-dark table-info">
+      <tr>
+        <th>ID</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>ID banco</th>
+        <th>Cédula cliente</th>
+        <th>Total pagar</th>
+        <th>DETALLES</th>
+      </tr>
+      <tr *ngFor="let cabecera of ListarFacturas">
+        <td>{{cabecera.idPC}}</td>
+        <td>{{cabecera.descripcionPC}}</td>
+        <td>{{cabecera.fechaPC | date: 'd/M/yy'}}</td>
+        <td>{{cabecera.idCB}}</td>
+        <td>{{cabecera.cedulaCli}}</td>
+        <td>{{cabecera.totalPD | currency: 'USD' | lowercase}}</td>
+        <td>
+          <table class="table table-sm  border-dark table-info">
+            <tr>
+              <th>ID detalle</th>
+              <th>Número factura</th>
+              <th>Valor pagar</th>
+              <th>Saldo factura</th>
+              <th>Total Factura</th>
+            </tr>
+            <tr *ngFor="let detalle of cabecera.detalles">
+              <td>{{detalle.idPD}}</td>
+              <td>{{detalle.numeroFac}}</td>
+              <td>{{detalle.valorApagar | currency: 'USD' | lowercase}}</td>
+              <td>{{detalle.saldoFac | currency: 'USD' | lowercase}}</td>
+              <td>{{detalle.saldoFac +  detalle.valorApagar | currency: 'USD' | lowercase}}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="row mt-4"></div>
+</div>

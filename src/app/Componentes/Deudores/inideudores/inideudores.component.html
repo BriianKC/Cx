@@ -1,0 +1,95 @@
+
+<div class="container bg-light">
+  <h2>Estado de Cuenta de Clientes</h2>
+  <div class="mt-4">
+    <form class="row g-3" [formGroup]="estado">
+      <div class="col-md-2">
+        <label class="form-label">FECHA INICIO</label>
+        <input type="date" class="form-control" formControlName="fechaIni" />
+        <div class="alert alert-danger" *ngIf="
+                estado.get('fechaIni')?.errors &&
+                estado.get('fechaIni')?.touched">
+              <p>
+                El campo es requerido
+              </p>
+            </div>
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">FECHA FIN</label>
+        <input type="date" class="form-control" formControlName="fechaFin" />
+        <div class="alert alert-danger" *ngIf="
+                estado.get('fechaFin')?.errors &&
+                estado.get('fechaFin')?.touched">
+              <p>
+                El campo es requerido
+              </p>
+            </div>
+      </div>
+      <div class="col-md-2">
+        <label for="inputPassword4" class="form-label">SELECCIONE CLIENTE</label>
+        <select class="form-select" formControlName="cedulaCli"  [(ngModel)]="selectedValue" >
+          <option [ngValue]="clocal.cedulaCli" *ngFor="let clocal of ListarClientes">
+            {{ clocal.nombresCli }}
+          </option>
+        </select>
+        <div class="alert alert-danger" *ngIf="
+                estado.get('cedulaCli')?.errors &&
+                estado.get('cedulaCli')?.touched">
+              <p>
+                El campo es requerido
+              </p>
+            </div>
+      </div>
+      <div class="col-md-1 mt-5">
+        <button (click)="listaFacturasFe($event)" [disabled]="estado.invalid"  class="btn btn-primary">
+          Guardar
+        </button>
+        <div class="col-md-2">
+          <button  (click)="exportAsXLSX()" type="button" class="btn btn-primary">Imprimir</button>
+        </div>
+      </div>
+    </form>
+    <div class="p-2 mb-2 bg-light text-danger">
+      <h4>{{ mensaje }}</h4>
+    </div>
+    <div class="col-20">
+      <table class="table table-sm  border-dark table-info">
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th>ID banco</th>
+          <th>Cédula cliente</th>
+          <th>Total pagar</th>
+          <th>DETALLES</th>
+        </tr>
+        <tr *ngFor="let cabecera of ListarFacturas">
+          <td>{{cabecera.idPC}}</td>
+          <td>{{cabecera.descripcionPC}}</td>
+          <td>{{cabecera.fechaPC | date: 'd/M/yy'}}</td>
+          <td>{{cabecera.idCB}}</td>
+          <td>{{cabecera.cedulaCli}}</td>
+          <td>{{cabecera.totalPD | currency: 'USD' | lowercase}}</td>
+          <td>
+            <table class="table table-sm  border-dark table-info">
+              <tr>
+                <th>ID detalle</th>
+                <th>Número factura</th>
+                <th>Valor pagar</th>
+                <th>Saldo factura</th>
+                <th>Total Factura</th>
+              </tr>
+              <tr *ngFor="let detalle of cabecera.detalles">
+                <td>{{detalle.idPD}}</td>
+                <td>{{detalle.numeroFac}}</td>
+                <td>{{detalle.valorApagar | currency: 'USD' | lowercase}}</td>
+                <td>{{detalle.saldoFac | currency: 'USD' | lowercase}}</td>
+                <td>{{detalle.saldoFac +  detalle.valorApagar | currency: 'USD' | lowercase}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div>
+  <div class="row mt-4"></div>
+</div>

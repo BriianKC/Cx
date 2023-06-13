@@ -1,0 +1,51 @@
+<div class="container bg-light">
+
+  <form class="row g-3">
+    <div class="row mt-4"></div>
+  <h2>Factura N° {{cabecera.idPC}}</h2>
+
+  <div class="col-md-3">
+    <h5>Cédula</h5>
+    <div class="p-2 mb-2 bg-light text-black">{{cabecera.cedulaCli}}</div>
+  </div>
+  <div class="col-md-3">
+    <h5>Nombres</h5>
+    <div>{{clocal.nombresCli}}</div>
+  </div>
+  <div class="col-md-3">
+    <h5>Descripción</h5>
+    <div> {{cabecera.descripcionPC}}</div>
+  </div>
+  <div class="col-md-3">
+    <h5>Fecha</h5>
+    <div> {{cabecera.fechaPC | date: 'd/M/yy'}}</div>
+  </div>
+  <div class="col-md-3">
+    <h5>Cuenta Bancaria</h5>
+    <div>{{cabecera.idCB}}</div>
+  </div>
+  </form>
+
+  <div class="mt-4">
+    <table id="tblCuentas" class="table table-sm  border-dark table-info">
+      <thead class="table-dark align-middle">
+        <tr >
+          <th scope="col">Número Factura</th>
+          <th scope="col">Saldo Factura</th>
+          <th scope="col">Pago Cobro</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor=" let d of ListarDetalles">
+          <th>{{d.numeroFac }}</th>
+          <th>{{d.saldoFac | currency : "USD" | lowercase}}</th>
+          <th>{{d.valorApagar | currency : "USD" | lowercase }}</th>
+        </tr>
+      </tbody>
+    </table>
+    <div class="col-md-8 offset-md-8"><h3>Total a pagar: {{cabecera.totalPD | currency : "USD" | lowercase}}</h3></div>
+  </div>
+  <div class="row mt-4"></div>
+
+
+</div>

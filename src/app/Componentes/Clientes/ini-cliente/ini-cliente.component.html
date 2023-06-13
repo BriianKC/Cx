@@ -1,0 +1,29 @@
+
+<div class="container bg-light">
+  <h2>CLIENTES</h2>
+  <div class="mt-4">
+    <table class="table table-sm  border-dark table-info ">
+      <thead class="table-dark align-middle">
+        <tr >
+          <th scope="col">CÉDULA</th>
+          <th scope="col">NOMBRES</th>
+          <th scope="col">DIRECCIÓN</th>
+          <th scope="col">TELÉFONO</th>
+          <th scope="col">E-MAIL</th>
+        </tr>
+      </thead>
+      <tbody >
+        <tr *ngFor="let cliente of ListarClientes" >
+          <td>{{cliente.cliIdentification}}</td>
+          <td>{{cliente.cliName}}</td>
+          <td >{{cliente.cliAddres}}</td>
+          <td>{{cliente.cliPhone}}</td>
+          <td>{{cliente.cliMail}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row mt-4"></div>
+</div>
+
+
